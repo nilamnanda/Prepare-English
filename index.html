@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Manda</title>
+<meta name="theme-color" content="#1f6fe5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Manda">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px)}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: engineering-English studio — top nav; row 1 = intro cards | live stage (tutor Manda + chat) | today's practice; row 2 = skill meters; row 3 = module tiles */
+:root{
+  --bg:#f2f6fc; --surface:#ffffff; --soft:#eaf1fc; --line:#dde6f3; --ink:#152238; --muted:#66748a;
+  --blue:#1f6fe5; --blue-dk:#164fb0; --blue-soft:#e3edfd; --teal:#14a58c; --teal-soft:#dff5ef; --violet:#7b5ce6; --violet-soft:#ece6fd;
+  --coral:#ef5a6f; --coral-soft:#fde6ea; --amber:#f1a92c; --amber-soft:#fff2d9; --on-blue:#ffffff;
+  --wall:#dbe8f7; --wall2:#c8dbf2; --desk:#8a6a4e; --desk-top:#a98260; --board:#ffffff;
+  --skin:#f7d5bf; --skin-sh:#eab89d; --hair:#5b3422; --hair-hi:#7a4a33; --jacket:#2b5fb8; --jacket-dk:#1f4a93; --lip:#d0566a;
+  --f-display:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Nunito",ui-sans-serif,system-ui,sans-serif;
+  --r:18px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1624; --surface:#172133; --soft:#1d2a41; --line:#26354f; --ink:#e8eef8; --muted:#97a6bd;
+  --blue:#5b9bff; --blue-dk:#8bb8ff; --blue-soft:#1d3157; --teal:#45d1b4; --teal-soft:#173a35; --violet:#a891ff; --violet-soft:#2b2550;
+  --coral:#ff8a9a; --coral-soft:#45222b; --amber:#ffc35c; --amber-soft:#3e321a; --on-blue:#0b1220;
+  --wall:#1c2a42; --wall2:#223452; --desk:#4a3a2c; --desk-top:#5d4835; --board:#e9eef6;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1624; --surface:#172133; --soft:#1d2a41; --line:#26354f; --ink:#e8eef8; --muted:#97a6bd;
+  --blue:#5b9bff; --blue-dk:#8bb8ff; --blue-soft:#1d3157; --teal:#45d1b4; --teal-soft:#173a35; --violet:#a891ff; --violet-soft:#2b2550;
+  --coral:#ff8a9a; --coral-soft:#45222b; --amber:#ffc35c; --amber-soft:#3e321a; --on-blue:#0b1220;
+  --wall:#1c2a42; --wall2:#223452; --desk:#4a3a2c; --desk-top:#5d4835; --board:#e9eef6;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;letter-spacing:-.01em}
+p{margin:0}
+.muted{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+
+/* top nav */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--surface)}
+.top-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:14px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:22px;white-space:nowrap}
+.brand .lg{width:36px;height:36px;border-radius:11px;background:var(--blue);display:grid;place-items:center;color:#fff}
+.brand .lg svg{width:22px;height:22px}
+.brand em{font-style:normal;color:var(--blue)}
+.tabs{display:flex;gap:4px;margin-left:10px;flex:1;min-width:0}
+.tab{display:flex;align-items:center;gap:7px;border:0;background:none;padding:9px 14px;border-radius:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.tab svg{width:19px;height:19px}
+.tab[aria-current="page"]{background:var(--blue-soft);color:var(--blue)}
+.me{display:flex;align-items:center;gap:8px;font-weight:800}
+.me .av{width:36px;height:36px;border-radius:50%;background:var(--amber-soft);overflow:hidden}
+.iconbtn{border:0;background:none;padding:8px;border-radius:10px;color:var(--muted);display:grid;place-items:center}
+.iconbtn:hover{background:var(--soft);color:var(--ink)}
+.iconbtn svg{width:20px;height:20px}
+
+main{max-width:1400px;margin:0 auto;padding-block:18px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+
+/* home grid */
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;grid-template-areas:"intro stage today";gap:16px;align-items:start}
+.intro{grid-area:intro;display:flex;flex-direction:column;gap:14px}
+.stagewrap{grid-area:stage;min-width:0}
+.today{grid-area:today;display:flex;flex-direction:column;gap:14px}
+.pill{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.pill svg{width:14px;height:14px;color:var(--amber)}
+.intro h1{font-size:30px;line-height:1.12;text-wrap:balance}
+.intro h1 b{color:var(--blue)}
+.intro p{color:var(--muted);font-weight:600}
+.big{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:var(--r);padding:14px;background:var(--tint)}
+.big .ic{width:50px;height:50px;border-radius:14px;background:var(--c);color:#fff;display:grid;place-items:center}
+.big .ic svg{width:26px;height:26px}
+.big b{display:block;font-family:var(--f-display);font-size:16px;color:var(--ink)}
+.big span{font-size:13px;color:var(--muted);font-weight:600}
+.big .go{width:34px;height:34px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center}
+.big .go svg{width:18px;height:18px}
+.big:hover{transform:translateY(-1px)}
+
+/* stage */
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:0;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:var(--wall);min-height:520px}
+.scene{position:relative;min-width:0;overflow:hidden}
+.scene svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.tutor{position:absolute;left:50%;bottom:0;width:min(78%,340px);transform:translateX(-56%)}
+.tutor svg{display:block;width:100%;height:auto}
+.say{position:absolute;right:14px;top:38%;max-width:200px;background:var(--surface);border-radius:16px;padding:10px 12px;font-size:13.5px;font-weight:700;box-shadow:0 8px 24px rgba(20,34,56,.15)}
+.say b{display:block;font-family:var(--f-display);font-size:15px}
+.say::before{content:"";position:absolute;left:-8px;top:18px;border:8px solid transparent;border-right-color:var(--surface);border-left:0}
+.micdock{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:3}
+.microw{display:flex;align-items:center;gap:12px}
+.wave{display:flex;align-items:center;gap:3px;height:34px;opacity:.35;transition:opacity .2s}
+.wave i{width:3px;border-radius:2px;background:var(--blue);height:30%}
+.live .wave{opacity:1}
+.live .wave i{animation:wv .9s ease-in-out infinite}
+.wave i:nth-child(2n){animation-delay:.15s}.wave i:nth-child(3n){animation-delay:.3s}.wave i:nth-child(5n){animation-delay:.45s}
+@keyframes wv{0%,100%{height:20%}50%{height:95%}}
+.bigmic{width:76px;height:76px;border-radius:50%;border:0;background:var(--blue);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 8px color-mix(in srgb,var(--blue) 22%,transparent),0 10px 24px rgba(31,111,229,.35)}
+.bigmic svg{width:34px;height:34px}
+.bigmic.rec{background:var(--coral);box-shadow:0 0 0 10px color-mix(in srgb,var(--coral) 25%,transparent)}
+.miclabel{background:var(--surface);border-radius:10px;padding:3px 10px;font-size:12.5px;font-weight:800;text-align:center;line-height:1.3}
+.miclabel span{display:block;font-weight:600;color:var(--muted);font-size:11.5px}
+.scen-chip{position:absolute;left:14px;top:14px;z-index:3;background:var(--surface);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:800;color:var(--blue);display:flex;gap:6px;align-items:center}
+
+/* tutor animation */
+.blink{animation:blink 4.2s infinite;transform-origin:center;transform-box:fill-box}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.mouth-open{display:none}
+.talking .mouth-open{display:inline;animation:talk .22s ease-in-out infinite alternate;transform-origin:center;transform-box:fill-box}
+.talking .mouth-closed{display:none}
+@keyframes talk{from{transform:scaleY(.35)}to{transform:scaleY(1)}}
+.wavehand{animation:hand 3.6s ease-in-out infinite;transform-origin:226px 300px}
+@keyframes hand{0%,70%,100%{transform:rotate(0)}78%{transform:rotate(-7deg)}86%{transform:rotate(5deg)}}
+.breathe{animation:br 4s ease-in-out infinite;transform-origin:50% 100%;transform-box:fill-box}
+@keyframes br{50%{transform:scaleY(1.008) translateY(-1px)}}
+.listening .head{animation:tilt 2s ease-in-out infinite;transform-origin:162px 220px}
+@keyframes tilt{50%{transform:rotate(-3deg)}}
+
+/* chat */
+.chat{display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line);min-width:0;max-height:640px}
+.chat-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--blue-soft)}
+.chat-h svg{width:18px;height:18px;color:var(--blue)}
+.chat-h b{flex:1;font-family:var(--f-display);font-size:14px;color:var(--blue);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.linkbtn{border:0;background:none;color:var(--muted);font-weight:800;font-size:12.5px;padding:2px 4px}
+.thread{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:260px}
+.m{display:flex;gap:8px;align-items:flex-start}
+.m .ava{width:30px;height:30px;border-radius:50%;flex:none;overflow:hidden;background:var(--amber-soft)}
+.m .who{font-size:12px;font-weight:800}
+.m .who span{font-weight:600;color:var(--muted);margin-left:6px}
+.m .bb{background:var(--soft);border-radius:4px 14px 14px 14px;padding:8px 11px;font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.m .tools{display:flex;gap:2px;margin-top:2px}
+.m .tools button{border:0;background:none;color:var(--muted);font-size:12px;font-weight:800;padding:2px 6px;border-radius:8px;display:inline-flex;gap:4px;align-items:center}
+.m .tools button:hover{background:var(--soft);color:var(--ink)}
+.m .tools svg{width:14px;height:14px}
+.m .tr{font-size:12.5px;color:var(--muted);margin-top:4px;font-weight:600}
+.m.me{flex-direction:row-reverse}
+.m.me .bb{background:var(--teal-soft);border-radius:14px 4px 14px 14px}
+.m.me .col{display:flex;flex-direction:column;align-items:flex-end;max-width:85%}
+.m .col{min-width:0;max-width:85%}
+.fix{margin-top:4px;background:var(--amber-soft);border-radius:12px;padding:7px 10px;font-size:12.5px;font-weight:600;display:flex;flex-direction:column;gap:2px;align-self:stretch}
+.fix.ok{background:var(--teal-soft)}
+.fix b{font-weight:800}
+.fix .better{font-weight:800;font-size:13.5px}
+.fix .acts{display:flex;gap:2px}
+.typing{display:inline-flex;gap:4px;padding:3px 0}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:dt 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dt{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.composer{border-top:1px solid var(--line);padding:10px;display:flex;flex-direction:column;gap:6px}
+.inrow{display:flex;gap:6px;align-items:flex-end;border:1.5px solid var(--line);border-radius:14px;padding:6px 6px 6px 10px;background:var(--bg)}
+.inrow:focus-within{border-color:var(--blue)}
+.inrow textarea{flex:1;min-width:0;border:0;background:transparent;resize:none;outline:none;font-weight:600;padding:4px 0;max-height:120px}
+.send{width:38px;height:38px;border-radius:11px;border:0;background:var(--blue);color:var(--on-blue);display:grid;place-items:center;flex:none}
+.send svg{width:18px;height:18px}
+.send[disabled]{opacity:.45}
+.hint{font-size:12px;color:var(--muted);font-weight:700}
+.err{color:var(--coral);font-size:12.5px;font-weight:800}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:12px;font-weight:800;font-size:13.5px}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--on-blue)}
+.btn svg{width:16px;height:16px}
+.startbox{display:flex;flex-direction:column;gap:10px;padding:4px}
+.startbox .btn{align-self:flex-start}
+
+/* feedback inside chat */
+.fb{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.fb h3{font-size:15px}
+.sc3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sc3 div{border-radius:10px;padding:8px 4px;text-align:center}
+.sc3 b{display:block;font-family:var(--f-display);font-size:20px}
+.sc3 span{font-size:11.5px;font-weight:800}
+.fb ul{margin:0;padding-left:18px;font-size:13.5px;font-weight:600}
+.fx{border-radius:10px;background:var(--surface);border:1px solid var(--line);padding:8px 10px;font-size:13px;display:flex;flex-direction:column;gap:1px}
+.fx .you{text-decoration:line-through;text-decoration-color:var(--coral);color:var(--muted);font-weight:600}
+.fx .better{font-weight:800}
+.fx .why{font-weight:600;opacity:.8}
+
+/* today */
+.todo{padding:16px}
+.todo-h{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.todo-h h2{font-size:18px;display:flex;gap:8px;align-items:center}
+.todo-h h2 svg{width:22px;height:22px;color:var(--teal)}
+.todo-h span{font-size:12px;color:var(--muted);font-weight:700}
+.ring{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin:12px 0}
+.ring svg{width:96px;height:96px}
+.ring b{font-family:var(--f-display);font-size:16px}
+.ring p{font-size:13px;color:var(--muted);font-weight:600}
+.tasks{display:flex;flex-direction:column}
+.task{display:flex;align-items:center;gap:10px;border:0;background:none;padding:9px 2px;border-top:1px solid var(--line);text-align:left;font-weight:700}
+.task .ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none}
+.task.done .ck{background:var(--teal);border-color:var(--teal);color:#fff}
+.task .ck svg{width:13px;height:13px}
+.task span{flex:1}
+.task .arr{width:16px;height:16px;color:var(--muted)}
+.phrase{padding:14px 16px;display:flex;flex-direction:column;gap:6px;background:var(--violet-soft);border:0}
+.phrase .en{font-family:var(--f-display);font-weight:700;font-size:17px;line-height:1.3}
+.phrase .id{font-size:13px;font-weight:600;color:var(--muted)}
+.phrase .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.cheer{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:14px 16px}
+.cheer svg{width:46px;height:46px}
+.cheer b{font-family:var(--f-display);color:var(--blue);font-size:16px;display:block}
+.cheer span{font-size:13px;color:var(--muted);font-weight:600}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:4px 0}
+.sk{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 18px;align-items:start}
+.sk+.sk{border-left:1px solid var(--line)}
+.sk .ic{width:50px;height:50px;border-radius:14px;background:var(--tint);color:var(--c);display:grid;place-items:center}
+.sk .ic svg{width:26px;height:26px}
+.sk .t{display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+.sk .t b{font-family:var(--f-display);font-size:16px}
+.sk .t span{font-weight:800;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--soft);margin:6px 0;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--c)}
+.sk p{font-size:12.5px;color:var(--muted);font-weight:600}
+
+/* modules */
+.mods-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.mods-h h2{font-size:19px}
+.mods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.mod{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 10px 8px 8px}
+.mod:hover{border-color:var(--blue)}
+.mod .th{width:58px;height:58px;border-radius:12px;background:var(--tint);overflow:hidden}
+.mod .th svg{width:100%;height:100%}
+.mod b{display:block;font-family:var(--f-display);font-size:14px;line-height:1.2;color:var(--ink)}
+.mod span{font-size:11.5px;color:var(--muted);font-weight:700}
+.mod.active{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft)}
+
+/* list pages */
+.page{display:flex;flex-direction:column;gap:14px;max-width:900px;width:100%;margin:0 auto}
+.page h1{font-size:26px}
+.plist{display:flex;flex-direction:column;gap:8px}
+.pi{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 12px}
+.pi .en{font-weight:800;overflow-wrap:anywhere}
+.pi .id{font-size:13px;color:var(--muted);font-weight:600}
+.pi.learned{opacity:.6}
+.pi .acts{display:flex}
+.empty{border:2px dashed var(--line);border-radius:var(--r);padding:22px;text-align:center;color:var(--muted);font-weight:700}
+.statrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.st{padding:14px}
+.st b{display:block;font-family:var(--f-display);font-size:26px}
+.st span{font-size:12.5px;color:var(--muted);font-weight:700}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:14px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:800;color:var(--muted)}
+.wd i{width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center}
+.wd.on i{background:var(--teal);color:#fff}
+.wd i svg{width:15px;height:15px}
+.seg{display:inline-flex;background:var(--soft);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:9px;font-size:13px;font-weight:800;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+/* modal */
+.backdrop{position:fixed;inset:0;background:rgba(10,18,32,.45);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+@media (min-width:700px){.backdrop{align-items:center;padding:20px}}
+.sheet{background:var(--surface);width:100%;max-width:760px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px}
+@media (min-width:700px){.sheet{border-radius:20px}}
+.sheet .mods{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.toasts{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(70px + env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:8px;z-index:60;max-width:min(340px,calc(100% - 32px))}
+.toast{background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.bottomnav{display:none}
+@media (prefers-reduced-motion:reduce){.blink,.wavehand,.breathe,.live .wave i,.typing i,.talking .mouth-open,.listening .head{animation:none}}
+
+/* responsive */
+@media (max-width:1240px){
+  .grid{grid-template-columns:minmax(0,1fr) 300px;grid-template-areas:"stage today" "intro today"}
+  .intro{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+  .intro .head{grid-column:1/-1}
+  .mods{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:980px){
+  .grid{grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "today" "intro"}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sk:nth-child(3){border-left:0}
+  .sk:nth-child(n+3){border-top:1px solid var(--line)}
+  .tabs .tab span{display:none}
+}
+@media (max-width:760px){
+  .stage{grid-template-columns:minmax(0,1fr);min-height:0}
+  .scene{height:340px}
+  .chat{border-left:0;border-top:1px solid var(--line);max-height:none}
+  .thread{max-height:none;min-height:180px}
+  .tabs{display:none}
+  .bottomnav{display:flex;position:fixed;inset:auto 0 0 0;z-index:40;background:var(--surface);border-top:1px solid var(--line);justify-content:space-around;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+  .bottomnav .tab{flex-direction:column;gap:2px;font-size:11px;padding:6px 10px}
+  main{padding-block:12px 96px}
+  .intro{grid-template-columns:1fr}
+  .intro h1{font-size:25px}
+  .mods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .statrow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .me b{display:none}
+  .say{top:16px;right:10px;max-width:170px;font-size:12.5px}
+  .tutor{width:min(72%,260px);transform:translateX(-62%)}
+}
+@media (max-width:440px){
+  .skills{grid-template-columns:1fr}
+  .sk+.sk{border-left:0;border-top:1px solid var(--line)}
+  .mod .th{width:48px;height:48px}
+}
+.authbox{max-width:420px;width:100%;margin:24px auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.authbox .face{width:96px;height:96px;border-radius:50%;overflow:hidden;align-self:center}
+.authbox h1{text-align:center;font-size:24px}
+.authbox p{text-align:center;color:var(--muted);font-weight:600;font-size:14px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12.5px;font-weight:800;color:var(--muted)}
+.field input{border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:10px 12px;font-weight:600;width:100%;min-width:0}
+.field input:focus{border-color:var(--blue);outline:none}
+.authbox .alt{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.okmsg{color:var(--teal);font-size:13px;font-weight:800}
+.notice{font-size:13px;background:var(--amber-soft);border-radius:12px;padding:10px 12px;font-weight:700}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <div class="brand"><span class="lg"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.2z"/></svg></span><span>Man<em>da</em></span></div>
+  <nav class="tabs" id="tabs" aria-label="Menu"></nav>
+  <button class="iconbtn" id="logoutBtn" hidden title="Keluar dari akun" aria-label="Keluar dari akun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h3.5A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5H14"/><path d="M10 8l-4 4 4 4M6 12h9"/></svg></button>
+  <button class="iconbtn" id="themeBtn" title="Ganti tema" aria-label="Ganti tema"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+  <div class="me"><span class="av" id="meAv"></span><b>Hi, Nilam!</b></div>
+</div></header>
+<main id="view"></main>
+<nav class="bottomnav" id="bnav" aria-label="Menu bawah"></nav>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="modalRoot"></div>
+
+<script type="module">
+/* =========================================================
+   ISI dengan konfigurasi Firebase yang SAMA dengan aplikasi Jadwal
+   (lihat PANDUAN-MANDA.md). Kalau kosong, aplikasi jalan dalam mode
+   lokal dan Manda belum bisa membalas.
+   ========================================================= */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  appId: ""
+};
+const AI_MODEL = "gemini-2.5-flash";   // ganti ke "gemini-2.5-flash-lite" kalau kuota cepat habis
+const FB_SDK = "https://www.gstatic.com/firebasejs/12.19.0/";
+
+(function(){
+/* ================= ART ================= */
+function tutorSVG(){return `<svg viewBox="0 0 324 380" aria-label="Manda, tutor bahasa Inggris">
+<g class="breathe">
+ <path d="M86 126C70 64 118 20 164 20c50 0 92 38 84 104 14 46 6 104 26 156-30 22-66 12-80-6h-60c-16 22-56 30-86 6 22-50 14-110 38-154z" fill="var(--hair)"/>
+ <path d="M70 380c2-74 34-124 92-134 60 10 92 60 94 134z" fill="var(--jacket)"/>
+ <path d="M140 246l22 56 22-56z" fill="#fff"/>
+ <path d="M140 246l-14 18 24 28 12 10zM184 246l14 18-24 28-12 10z" fill="var(--jacket-dk)"/>
+ <path d="M147 250l10 70M177 250l-10 70" stroke="#1f6fe5" stroke-width="4" stroke-linecap="round"/>
+ <rect x="146" y="316" width="32" height="40" rx="5" fill="#fff" stroke="var(--line)" stroke-width="2"/>
+ <rect x="152" y="322" width="20" height="14" rx="3" fill="var(--blue-soft)"/><path d="M152 342h20M152 348h14" stroke="var(--line)" stroke-width="2.5" stroke-linecap="round"/>
+ <circle cx="218" cy="300" r="13" fill="#fff"/><path d="M220 290l-8 12h6l-2 9 9-13h-6z" fill="var(--jacket)"/>
+ <path d="M94 300c-4 24-6 52-6 80M232 296c4 24 8 52 8 84" stroke="var(--jacket-dk)" stroke-width="3" fill="none" opacity=".5"/>
+</g>
+<g class="wavehand">
+ <path d="M222 272c26-8 40-30 38-56l-20-4c0 20-10 34-30 42z" fill="var(--jacket)"/>
+ <path d="M218 276c22-6 34-22 36-40" stroke="var(--jacket-dk)" stroke-width="3" fill="none" opacity=".5"/>
+ <g transform="translate(250 196)">
+  <rect x="-15" y="-6" width="30" height="26" rx="12" fill="var(--skin)"/>
+  <rect x="-14" y="-30" width="7" height="28" rx="3.5" fill="var(--skin)"/><rect x="-6" y="-36" width="7" height="34" rx="3.5" fill="var(--skin)"/>
+  <rect x="2" y="-34" width="7" height="32" rx="3.5" fill="var(--skin)"/><rect x="10" y="-26" width="6.5" height="26" rx="3.2" fill="var(--skin)"/>
+  <rect x="-24" y="0" width="14" height="7" rx="3.5" fill="var(--skin)" transform="rotate(-30 -17 3)"/>
+ </g>
+</g>
+<g class="head">
+ <rect x="146" y="188" width="32" height="46" rx="12" fill="var(--skin-sh)"/>
+ <ellipse cx="100" cy="146" rx="10" ry="14" fill="var(--skin-sh)"/><ellipse cx="224" cy="146" rx="10" ry="14" fill="var(--skin-sh)"/>
+ <circle cx="100" cy="164" r="3.5" fill="var(--amber)"/><circle cx="224" cy="164" r="3.5" fill="var(--amber)"/>
+ <ellipse cx="162" cy="140" rx="62" ry="70" fill="var(--skin)"/>
+ <path d="M98 132c0-62 40-82 70-80 38 2 66 30 60 82-12-24-30-40-52-46-6 18-26 30-50 32 12-10 18-20 20-30-16 12-32 26-48 42z" fill="var(--hair)"/>
+ <path d="M120 78c14-10 34-16 54-14M190 70c14 6 26 18 32 34" stroke="var(--hair-hi)" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <path d="M122 116q16-8 30-2M172 114q16-6 30 2" stroke="var(--hair)" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <g class="blink">
+  <ellipse cx="138" cy="142" rx="15" ry="17" fill="#fff"/><circle cx="139" cy="144" r="11" fill="#7a4428"/><circle cx="139" cy="145" r="5.5" fill="#1d1410"/><circle cx="143" cy="139" r="3.5" fill="#fff"/><circle cx="135" cy="149" r="1.6" fill="#fff"/>
+  <ellipse cx="186" cy="142" rx="15" ry="17" fill="#fff"/><circle cx="185" cy="144" r="11" fill="#7a4428"/><circle cx="185" cy="145" r="5.5" fill="#1d1410"/><circle cx="189" cy="139" r="3.5" fill="#fff"/><circle cx="181" cy="149" r="1.6" fill="#fff"/>
+  <path d="M121 134q17-16 34-2M169 132q17-14 34 2" stroke="#2a1a12" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+ </g>
+ <path d="M160 160q2 6 6 5" stroke="var(--skin-sh)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+ <ellipse cx="120" cy="170" rx="11" ry="6" fill="#f59ab0" opacity=".45"/><ellipse cx="204" cy="170" rx="11" ry="6" fill="#f59ab0" opacity=".45"/>
+ <path class="mouth-closed" d="M144 178q18 20 36 0q-18 7-36 0z" fill="var(--lip)"/>
+ <g class="mouth-open"><ellipse cx="162" cy="183" rx="13" ry="9" fill="#8e2c3c"/><ellipse cx="162" cy="188" rx="8" ry="4" fill="#ef7f8f"/></g>
+</g>
+</svg>`}
+const SCENE=`<svg class="bg" viewBox="0 0 600 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<rect width="600" height="520" fill="var(--wall)"/>
+<rect y="330" width="600" height="190" fill="var(--wall2)"/>
+<g transform="translate(26 40)"><rect width="170" height="130" rx="8" fill="var(--board)" stroke="#9fb3cc" stroke-width="3"/>
+ <text x="22" y="40" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="26" fill="#1f3c6e">V = IR</text>
+ <text x="22" y="66" font-family="Plus Jakarta Sans,sans-serif" font-weight="700" font-size="14" fill="#1f3c6e">P = V·I·cos φ</text>
+ <path d="M22 96h30l6-10 8 20 8-20 8 20 6-10h30v-14h-8M136 82h-8l0 0" stroke="#1f3c6e" stroke-width="2.5" fill="none"/>
+ <circle cx="146" cy="96" r="9" fill="none" stroke="#1f3c6e" stroke-width="2.5"/><path d="M141 96q2.5-5 5 0t5 0" stroke="#1f3c6e" stroke-width="2" fill="none"/></g>
+<g transform="translate(420 30) rotate(3)"><rect width="140" height="150" rx="6" fill="#fff6dc" stroke="#e7d6a6" stroke-width="2"/>
+ <text x="16" y="34" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="15" fill="#6b5a2a">TRAFO</text>
+ <text x="16" y="58" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="15" fill="#6b5a2a">PANEL MV/LV</text>
+ <text x="16" y="82" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="15" fill="#6b5a2a">MOTOR 3φ</text>
+ <text x="16" y="106" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="15" fill="#6b5a2a">PROTEKSI</text>
+ <text x="16" y="130" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="15" fill="#6b5a2a">SAFETY ✓</text></g>
+<g transform="translate(470 230)"><rect width="110" height="78" rx="8" fill="#2c3a4f"/><rect x="8" y="8" width="72" height="52" rx="4" fill="#0f2a22"/>
+ <path d="M12 34q8-18 16 0t16 0 16 0 16 0" stroke="#45e0a8" stroke-width="2.5" fill="none"/><circle cx="94" cy="20" r="6" fill="#6b7a90"/><circle cx="94" cy="42" r="6" fill="#6b7a90"/></g>
+<rect x="0" y="420" width="600" height="18" fill="var(--desk-top)"/><rect x="0" y="438" width="600" height="82" fill="var(--desk)"/>
+<g transform="translate(30 340)"><path d="M10 0h110l-6 72H16z" fill="#3a4a63"/><rect x="0" y="72" width="130" height="10" rx="3" fill="#56677f"/><path d="M58 22l-10 18h10l-6 16 18-22h-10l6-12z" fill="#5b9bff"/></g>
+<g transform="translate(470 350)"><rect width="56" height="80" rx="8" fill="#f2c230" stroke="#c99a12" stroke-width="2"/><rect x="8" y="8" width="40" height="22" rx="3" fill="#cfe2d2"/><text x="12" y="25" font-family="monospace" font-size="13" font-weight="700" fill="#1d2b22">220V</text><circle cx="28" cy="52" r="12" fill="#2c3a4f"/><path d="M18 80l-8 30M38 80l8 30" stroke="#d9364a" stroke-width="4"/></g>
+</svg>`;
+const MINI_FACE=`<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="var(--amber-soft)"/><path d="M12 30c-2-16 8-24 18-24s20 8 18 24c4 10 2 20 6 30H6c4-10 2-20 6-30z" fill="var(--hair)"/><ellipse cx="30" cy="30" rx="13" ry="15" fill="var(--skin)"/><path d="M17 27c2-12 10-15 16-14 7 1 12 6 11 14-3-5-7-8-12-9-1 4-6 6-10 6 2-2 3-4 4-6-3 3-6 6-9 9z" fill="var(--hair)"/><circle cx="25" cy="31" r="2.2" fill="#2a1a12"/><circle cx="35" cy="31" r="2.2" fill="#2a1a12"/><path d="M26 37q4 4 8 0" stroke="var(--lip)" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M14 60c2-8 8-12 16-12s14 4 16 12z" fill="var(--jacket)"/></svg>`;
+const NILAM_FACE=`<svg viewBox="0 0 60 60" aria-hidden="true"><rect width="60" height="60" fill="var(--teal-soft)"/><path d="M10 34c-2-18 8-28 20-28s22 10 20 28v26H10z" fill="#2d2420"/><ellipse cx="30" cy="31" rx="12.5" ry="14" fill="#efc7aa"/><path d="M17 28c3-11 10-14 14-14 8 0 13 6 12 14-4-6-10-8-16-8-3 4-6 6-10 8z" fill="#2d2420"/><circle cx="25" cy="32" r="2" fill="#2a1a12"/><circle cx="35" cy="32" r="2" fill="#2a1a12"/><path d="M26 38q4 3 8 0" stroke="#b5485a" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M12 60c2-8 9-12 18-12s16 4 18 12z" fill="var(--teal)"/></svg>`;
+const I={
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7v9h-6v-6h-5v6h-6z"/></svg>',
+ brief:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/></svg>',
+ chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4A2.5 2.5 0 0 1 4 13.5z"/><path d="M8.5 9.5h7"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.5q4.5-2 9 .5 4.5-2.5 9-.5v13q-4.5-2-9 .5-4.5-2.5-9-.5z"/><path d="M12 6v13"/></svg>',
+ chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 20v-6M12 20V8M18 20V4"/></svg>',
+ mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>',
+ send:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-6 16-3-7z"/></svg>',
+ speak:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>',
+ lang:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h9M8.5 3v2M6 5q1 5 6 8M11 5q-1 5-6 8"/><path d="m13 21 4-9 4 9M14.5 18h5"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+ arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+ chev:'<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+ bolt:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.2z"/></svg>',
+ people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9" r="2.5"/><path d="M2.5 19a5.5 5.5 0 0 1 11 0M14 14.5a4.5 4.5 0 0 1 7.5 3.5"/></svg>',
+ wave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg>',
+ doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg>',
+ trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4.5h4V7M7 7l1 13h8l1-13"/></svg>',
+ flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4.5q4-2 7 0t7 0v8q-4 2-7 0t-7 0"/></svg>',
+ trophy:'<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h20v10a10 10 0 0 1-20 0z" fill="#f5b52e"/><path d="M14 9H7a7 7 0 0 0 7 9M34 9h7a7 7 0 0 1-7 9" stroke="#f5b52e" stroke-width="3.5" fill="none"/><rect x="21" y="26" width="6" height="8" fill="#d99a1a"/><rect x="14" y="34" width="20" height="7" rx="2" fill="#d99a1a"/><path d="m24 9 1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="#fff6d6"/></svg>',
+ spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.8 5 4.6 8.9 10 10-5.4 1.1-9.2 5-10 10-.8-5-4.6-8.9-10-10C7.4 10.9 11.2 7 12 2z"/></svg>'
+};
+/* module thumbnails (original mini illustrations) */
+const TH={
+ interview:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--violet-soft)"/><rect x="8" y="34" width="44" height="6" rx="2" fill="#8d7ad8"/><circle cx="22" cy="22" r="7" fill="#f2c9ad"/><path d="M14 34c0-6 4-9 8-9s8 3 8 9z" fill="#4b5d7d"/><circle cx="40" cy="22" r="7" fill="#efc7aa"/><path d="M33 16c2-5 12-5 14 0v8h-3v-6h-8v6h-3z" fill="#2d2420"/><path d="M32 34c0-6 4-9 8-9s8 3 8 9z" fill="var(--jacket)"/></svg>`,
+ firstday:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--amber-soft)"/><circle cx="30" cy="22" r="9" fill="#f2c9ad"/><path d="M20 20q0-12 10-12t10 12q-4-5-10-5t-10 5z" fill="#f2b331"/><rect x="18" y="16" width="24" height="4" rx="2" fill="#e09d17"/><path d="M16 54c0-12 6-18 14-18s14 6 14 18z" fill="var(--jacket)"/><path d="M44 30l6-6" stroke="#f2c9ad" stroke-width="5" stroke-linecap="round"/></svg>`,
+ safety:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--coral-soft)"/><path d="M12 36a18 18 0 0 1 36 0z" fill="#f2b331"/><rect x="8" y="36" width="44" height="6" rx="3" fill="#e09d17"/><rect x="27" y="16" width="6" height="12" rx="2" fill="#e09d17"/><path d="M24 50h12" stroke="#d9364a" stroke-width="4" stroke-linecap="round"/></svg>`,
+ askhelp:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--blue-soft)"/><circle cx="30" cy="30" r="17" fill="#fff"/><text x="30" y="38" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="24" font-weight="800" fill="var(--blue)">?</text></svg>`,
+ report:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--teal-soft)"/><rect x="16" y="10" width="28" height="40" rx="4" fill="#fff" stroke="var(--teal)" stroke-width="2"/><path d="M22 22l3 3 5-6M22 32l3 3 5-6M34 23h5M34 33h5" stroke="var(--teal)" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+ explain:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--amber-soft)"/><rect x="14" y="18" width="32" height="26" rx="3" fill="#7f8ea6"/><path d="M18 18v-6M26 18v-6M34 18v-6M42 18v-6" stroke="#4b5d7d" stroke-width="3"/><circle cx="24" cy="31" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><circle cx="36" cy="31" r="6" fill="none" stroke="#fff" stroke-width="2.5"/><path d="M14 48h32" stroke="#4b5d7d" stroke-width="3"/></svg>`,
+ smalltalk:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--coral-soft)"/><path d="M14 26h24v12a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z" fill="#fff" stroke="#c97b5a" stroke-width="2"/><path d="M38 30h4a5 5 0 0 1 0 10h-4" stroke="#c97b5a" stroke-width="2.5" fill="none"/><path d="M22 12q-3 4 0 8M30 12q-3 4 0 8" stroke="#c97b5a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+ meeting:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--violet-soft)"/><ellipse cx="30" cy="40" rx="22" ry="8" fill="#8d7ad8"/><circle cx="16" cy="24" r="5" fill="#f2c9ad"/><circle cx="30" cy="20" r="5" fill="#efc7aa"/><circle cx="44" cy="24" r="5" fill="#e6b896"/><path d="M10 36q6-8 12 0M24 32q6-8 12 0M38 36q6-8 12 0" fill="var(--jacket)"/></svg>`,
+ presentation:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--blue-soft)"/><rect x="10" y="10" width="40" height="28" rx="3" fill="#fff" stroke="var(--blue)" stroke-width="2"/><path d="M16 32l8-8 6 5 12-12" stroke="var(--blue)" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 38v10M22 50h16" stroke="var(--blue)" stroke-width="3" stroke-linecap="round"/></svg>`,
+ free:`<svg viewBox="0 0 60 60"><rect width="60" height="60" fill="var(--teal-soft)"/><path d="M10 14h28a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H22l-8 6v-6h-4a4 4 0 0 1-4-4V18a4 4 0 0 1 4-4z" fill="#fff" stroke="var(--teal)" stroke-width="2"/><path d="M30 38h14l6 5v-5a4 4 0 0 0 4-4v-8" stroke="var(--teal)" stroke-width="2" fill="none"/></svg>`
+};
+
+/* ================= CONTENT ================= */
+const SCEN=[
+ {id:"interview",cat:"interview",t:"Interview magang",d:"HRD · pertanyaan umum",role:"an HR officer interviewing Nilam for an engineering internship at an industrial company in Batam",who:"HR Officer",open:"Good morning, Nilam. Thank you for coming today. Could you please introduce yourself?"},
+ {id:"firstday",cat:"work",t:"Hari pertama",d:"Bertemu supervisor",role:"Nilam's supervisor in the electrical department, welcoming her on her first day as an intern",who:"Supervisor",open:"Welcome to the electrical department, Nilam! I'm your supervisor for the next few months. How was your trip here this morning?"},
+ {id:"safety",cat:"tech",t:"Safety briefing",d:"APD & LOTO",role:"an HSE officer giving Nilam a safety briefing before she enters a substation",who:"HSE Officer",open:"Before you enter the substation, we need to go through safety first. Can you tell me what PPE you are wearing today?"},
+ {id:"askhelp",cat:"tech",t:"Bertanya ke senior",d:"Minta penjelasan ulang",role:"a senior electrical technician giving Nilam a task; speak a bit fast and use technical terms so she has to ask for clarification",who:"Senior Technician",open:"Okay, I need you to check the insulation resistance of motor number three with the megger, then log the reading. Any questions before you start?"},
+ {id:"report",cat:"tech",t:"Laporan harian",d:"Ceritakan kerja hari ini",role:"Nilam's supervisor asking for her end-of-day progress report",who:"Supervisor",open:"Hi Nilam, it's almost the end of the day. What did you work on today?"},
+ {id:"explain",cat:"tech",t:"Menjelaskan alat",d:"Trafo, motor, panel",role:"a mechanical engineer colleague who asks Nilam to explain electrical equipment in simple words",who:"Engineer",open:"I heard you study electrical power engineering. Can you explain to me how a transformer works, in simple words?"},
+ {id:"smalltalk",cat:"work",t:"Small talk pantry",d:"Ngobrol santai",role:"a friendly colleague chatting with Nilam during a coffee break",who:"Coworker",open:"Hey, you're the new intern, right? Nice to meet you! Where are you from?"},
+ {id:"meeting",cat:"work",t:"Morning meeting",d:"Update singkat ke tim",role:"a team leader running a morning meeting who asks Nilam for an update and follow-up questions",who:"Team Leader",open:"Good morning, team. Nilam, could you give us a short update on the panel inspection from yesterday?"},
+ {id:"presentation",cat:"work",t:"Presentasi akhir",d:"Proyek magang",role:"a manager listening to Nilam's final internship presentation and asking questions",who:"Manager",open:"Alright Nilam, the floor is yours. What is the topic of your internship project, and why did you choose it?"},
+ {id:"free",cat:"work",t:"Ngobrol bebas",d:"Cerita apa saja",role:"a friendly English conversation partner",who:"Manda",open:"Hi Nilam! How's your day going? Tell me anything you like."}
+];
+const PHRASES=[
+ ["Could you please repeat that more slowly?","Bisa tolong diulang lebih pelan?"],
+ ["Just to make sure I understand, you mean…","Untuk memastikan saya paham, maksud Anda…"],
+ ["I'll double-check and get back to you.","Saya cek ulang dulu lalu saya kabari."],
+ ["Is it safe to start working on this panel?","Apakah aman mulai bekerja di panel ini?"],
+ ["I'm not sure, but I'll find out.","Saya kurang yakin, tapi akan saya cari tahu."],
+ ["Today I assisted the technician with a routine inspection.","Hari ini saya membantu teknisi melakukan inspeksi rutin."],
+ ["Could you show me how to do it the first time?","Bisa tunjukkan caranya untuk pertama kali?"],
+ ["Sorry, I made a mistake. I'll fix it right away.","Maaf, saya salah. Akan saya perbaiki segera."],
+ ["What should I prioritize today?","Apa yang harus saya prioritaskan hari ini?"],
+ ["The reading was within the normal range.","Hasil pembacaannya masih dalam rentang normal."],
+ ["I'm interested in power systems and electrical maintenance.","Saya tertarik pada sistem tenaga dan perawatan kelistrikan."],
+ ["Thank you for your guidance today.","Terima kasih atas bimbingannya hari ini."],
+ ["Do I need to wear any special PPE here?","Apakah saya perlu memakai APD khusus di sini?"],
+ ["Let me write that down so I don't forget.","Saya catat dulu supaya tidak lupa."]
+];
+const TASKS=[["phrase","Kalimat hari ini"],["interview","Simulasi interview"],["tech","Percakapan teknis"],["vocab","Hafalkan 3 frasa"],["work","Percakapan di tempat kerja"]];
+const LEVELS=[["easy","Pemula"],["mid","Menengah"],["hard","Lancar"]];
+const LEVEL_TXT={easy:"Nilam is a beginner (around A2). Use short, simple sentences and common words.",mid:"Nilam is intermediate (around B1). Use natural everyday workplace English with a few technical words.",hard:"Nilam is upper-intermediate (B2). Speak naturally like a real colleague, with follow-up questions."};
+
+/* ================= UTILS ================= */
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const today=()=>ymd(new Date());
+const dayNo=()=>Math.floor((new Date(today()+"T00:00:00")-new Date("2026-01-01T00:00:00"))/864e5);
+const hhmm=()=>{const d=new Date();return pad(d.getHours())+":"+pad(d.getMinutes())};
+function toast(m){const el=document.createElement("div");el.className="toast";el.textContent=m;document.getElementById("toasts").appendChild(el);setTimeout(()=>el.remove(),2600)}
+const BULAN=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],HARI=["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+
+/* ================= STATE / STORAGE ================= */
+const S={view:"home",prog:{days:{},phrases:[],level:"mid",sessions:[]},mode:"loading",ref:null,chat:null,busy:false,sample:null,sampleDead:false,autoSpeak:true,scen:null,talking:false,listening:false};
+try{const th=localStorage.getItem("su-theme");if(th)document.documentElement.dataset.theme=th}catch(e){}
+try{S.autoSpeak=localStorage.getItem("su-auto")!=="0"}catch(e){}
+const LKEY="su-prog";
+function normProg(p){p=p||{};return{days:p.days||{},phrases:Array.isArray(p.phrases)?p.phrases:[],level:p.level||"mid",sessions:Array.isArray(p.sessions)?p.sessions:[]}}
+let writing=Promise.resolve();
+function save(){const snap=JSON.parse(JSON.stringify(S.prog));
+  if(S.mode==="cloud"&&S.ref)writing=writing.then(()=>S.ref.set(snap)).catch(()=>toast("Gagal menyimpan. Cek internet."));
+  else{try{localStorage.setItem(LKEY,JSON.stringify(snap))}catch(e){}}}
+let fb=null;
+async function initStore(){
+  if(!FIREBASE_CONFIG.apiKey){S.mode="local";loadLocal();render();return}
+  try{
+    const [App,A,F,AI]=await Promise.all([import(FB_SDK+"firebase-app.js"),import(FB_SDK+"firebase-auth.js"),import(FB_SDK+"firebase-firestore.js"),import(FB_SDK+"firebase-ai.js")]);
+    const app=App.initializeApp(FIREBASE_CONFIG);
+    const auth=A.getAuth(app);
+    let db;try{db=F.initializeFirestore(app,{localCache:F.persistentLocalCache({tabManager:F.persistentMultipleTabManager()})})}catch(e){db=F.getFirestore(app)}
+    let ai=null;try{ai=AI.getAI(app,{backend:new AI.GoogleAIBackend()})}catch(e){console.error(e)}
+    fb={A,F,AI,auth,db,ai,unsub:null};
+    A.onAuthStateChanged(auth,u=>{
+      if(fb.unsub){fb.unsub();fb.unsub=null}
+      if(!u){S.mode="auth";S.ref=null;render();return}
+      const ref=F.doc(db,"users",u.uid,"english","progress");
+      S.ref={set:d=>F.setDoc(ref,d)};S.mode="cloud";render();
+      fb.unsub=F.onSnapshot(ref,s=>{
+        if(s.exists()&&!s.metadata.hasPendingWrites){S.prog=normProg(s.data());if(!S.chat)render();else renderSide()}
+      },err=>toast("Progres tidak bisa dibaca ("+err.code+"). Cek aturan Firestore di PANDUAN."));
+    });
+  }catch(e){console.error(e);S.mode="local";loadLocal();render()}
+}
+function loadLocal(){try{S.prog=normProg(JSON.parse(localStorage.getItem(LKEY)))}catch(e){}}
+function aiErr(e){const m=String((e&&(e.code||""))+" "+(e&&e.message||""));
+  if(/429|quota|RESOURCE_EXHAUSTED|rate/i.test(m))return{code:"rate_limited"};
+  if(/403|PERMISSION|api-not-enabled|not been used|disabled|API_KEY/i.test(m))return{code:"ai_off"};
+  if(/SAFETY|blocked/i.test(m))return{code:"refused"};
+  return{code:"upstream_error"}}
+async function getSample(){
+  if(!fb||!fb.ai)return null;
+  const run=async(input)=>{
+    let system="",contents=[];
+    if(typeof input==="string"){contents=[{role:"user",parts:[{text:input}]}]}
+    else{system=input[0].content;const rest=input.slice(1);
+      contents=rest.map(t=>({role:t.role==="assistant"?"model":"user",parts:[{text:t.content}]}));
+      if(!contents.length||contents[0].role!=="user")contents.unshift({role:"user",parts:[{text:"Start the role-play now."}]})}
+    const opts={model:AI_MODEL,generationConfig:{responseMimeType:"application/json",temperature:.8}};
+    if(system)opts.systemInstruction=system;
+    let res;try{res=await fb.AI.getGenerativeModel(fb.ai,opts).generateContent({contents})}catch(e){console.error(e);throw aiErr(e)}
+    let txt="";try{txt=res.response.text()}catch(e){throw{code:"refused"}}
+    try{return JSON.parse(txt)}catch(e){const m=txt.match(/[\[{][\s\S]*[\]}]/);if(m){try{return JSON.parse(m[0])}catch(_){}}throw{code:"invalid_json"}}
+  };
+  return{json:run};
+}
+const ERR={ai_off:"Otak Manda (Firebase AI Logic) belum diaktifkan. Ikuti PANDUAN langkah 2.",not_granted:"Manda belum diizinkan memakai Claude. Muat ulang halaman lalu pilih Izinkan.",sampling_disabled:"Fitur Claude tidak tersedia untuk akun ini.",rate_limited:"Batas pemakaian Claude sedang penuh. Coba lagi beberapa menit lagi.",session_expired:"Sesi login habis. Masuk lagi ke Claude lalu muat ulang.",refused:"Manda tidak bisa menjawab pesan itu. Coba kalimat lain.",invalid_json:"Jawaban terpotong. Kirim ulang pesanmu.",upstream_error:"Koneksi terputus. Kirim ulang pesanmu."};
+const errText=c=>ERR[c]||ERR.upstream_error;
+
+/* ================= PROGRESS ================= */
+function dayRec(k){return S.prog.days[k]||(S.prog.days[k]={sessions:0,turns:0,tasks:[]})}
+function markTask(id){const d=dayRec(today());d.tasks=d.tasks||[];if(!d.tasks.includes(id)){d.tasks.push(id);save();renderSide();toast("Tugas selesai: "+TASKS.find(t=>t[0]===id)[1])}}
+const doneTasks=()=>((S.prog.days[today()]||{}).tasks||[]);
+function streak(){const d=S.prog.days;let n=0,cur=new Date();if(!(d[ymd(cur)]&&(d[ymd(cur)].tasks||[]).length))cur=addDays(cur,-1);while(d[ymd(cur)]&&(d[ymd(cur)].tasks||[]).length){n++;cur=addDays(cur,-1)}return n}
+function skillStats(){
+  const ss=S.prog.sessions.slice(0,5);const avg=k=>ss.length?Math.round(ss.reduce((a,s)=>a+(s[k]||0),0)/ss.length*20):0;
+  const iv=S.prog.sessions.filter(s=>s.scen==="interview").length;
+  return{f:avg("f"),g:avg("g"),v:avg("v"),iv,learned:S.prog.phrases.filter(p=>p.learned).length};
+}
+function addPhrase(en,id){
+  if(S.prog.phrases.some(p=>p.en.toLowerCase()===en.toLowerCase())){toast("Sudah ada di Kosakata");return}
+  S.prog.phrases.unshift({en,id:id||"",learned:false,at:Date.now()});if(S.prog.phrases.length>300)S.prog.phrases.length=300;save();toast("Disimpan ke Kosakata");
+}
+const todayPhrase=()=>PHRASES[dayNo()%PHRASES.length];
+const todayScen=()=>SCEN[dayNo()%(SCEN.length-1)];
+
+/* ================= SPEECH ================= */
+const TTS="speechSynthesis" in window;let voice=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();voice=vs.find(v=>/en-US/i.test(v.lang)&&/female|samantha|aria|jenny|zira|google us/i.test(v.name))||vs.find(v=>/^en(-|_)US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null}catch(e){}}
+if(TTS){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice}catch(e){}}
+let talkTimer=null;
+function setTalking(on){S.talking=on;const st=document.getElementById("stage");if(st){st.classList.toggle("talking",on);st.classList.toggle("live",on||S.listening)}}
+function speak(text,rate){
+  clearTimeout(talkTimer);
+  const fake=()=>{setTalking(true);talkTimer=setTimeout(()=>setTalking(false),Math.min(9000,600+text.split(/\s+/).length*330))};
+  if(!TTS){fake();return}
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";if(voice)u.voice=voice;u.rate=rate||(S.prog.level==="easy"?.85:.95);
+    let started=false;u.onstart=()=>{started=true;setTalking(true)};u.onend=u.onerror=()=>{clearTimeout(talkTimer);setTalking(false)};
+    speechSynthesis.speak(u);setTimeout(()=>{if(!started)fake()},700);
+  }catch(e){fake()}
+}
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,micBlocked=false;
+function setListening(on){S.listening=on;const st=document.getElementById("stage");if(st){st.classList.toggle("listening",on);st.classList.toggle("live",on||S.talking)}const b=document.getElementById("bigMic");if(b)b.classList.toggle("rec",on);const l=document.getElementById("micLabel");if(l)l.innerHTML=on?"Aku mendengarkan…<span>ketuk lagi untuk berhenti</span>":"Klik untuk bicara<span>atau pakai mic keyboard</span>"}
+function toggleMic(){
+  if(!S.chat||S.chat.feedback){startChat((S.scen||todayScen()).id);return}
+  const box=document.getElementById("msg");
+  if(rec){try{rec.stop()}catch(e){}return}
+  if(!SR||micBlocked){micFallback();return}
+  try{rec=new SR();rec.lang="en-US";rec.interimResults=true;rec.continuous=false;
+    const base=box.value?box.value.replace(/\s*$/," "):"";
+    rec.onresult=e=>{let t="";for(const r of e.results)t+=r[0].transcript;box.value=base+t;autosize(box)};
+    rec.onerror=e=>{if(["not-allowed","service-not-allowed","audio-capture"].includes(e.error)){micBlocked=true;micFallback()}};
+    rec.onend=()=>{rec=null;setListening(false)};
+    rec.start();setListening(true);
+  }catch(e){rec=null;micBlocked=true;micFallback()}
+}
+function micFallback(){setListening(false);const t=document.getElementById("micTip");if(t)t.hidden=false;const b=document.getElementById("msg");if(b){b.focus();b.scrollIntoView({block:"center",behavior:"smooth"})}}
+
+/* ================= RENDER ================= */
+const NAV=[["home","Beranda",I.home],["practice","Latihan",I.brief],["vocab","Kosakata",I.book],["progress","Progres",I.chart]];
+function renderNav(){
+  const h=NAV.map(n=>`<button class="tab" data-view="${n[0]}" aria-current="${S.view===n[0]?"page":"false"}">${n[2]}<span>${n[1]}</span></button>`).join("");
+  document.getElementById("tabs").innerHTML=h;document.getElementById("bnav").innerHTML=h;
+}
+function vHome(){
+  return `<div class="grid">
+   <section class="intro" id="intro">${vIntro()}</section>
+   <section class="stagewrap">${vStage()}</section>
+   <aside class="today" id="side">${vSide()}</aside>
+  </div>
+  <section class="card skills" id="skills">${vSkills()}</section>
+  <section class="mods-wrap" style="display:flex;flex-direction:column;gap:10px"><div class="mods-h"><h2>Modul latihan</h2><span class="muted" style="font-weight:700;font-size:13px">Pilih situasi kerja nyata, Manda akan memerankannya.</span></div><div class="mods">${modTiles()}</div></section>`;
+}
+function vIntro(){
+  return `${S.mode==="local"?`<p class="notice">Mode lokal: progres hanya tersimpan di perangkat ini dan Manda belum bisa membalas. Isi konfigurasi Firebase (lihat PANDUAN).</p>`:""}<div class="head" style="display:flex;flex-direction:column;gap:10px"><span class="pill">${I.bolt}Partner bahasa Inggris untuk karier teknik</span>
+   <h1>Latihan English untuk <b>magang Teknik Elektro</b> &amp; dunia kerja</h1>
+   <p>Bangun percaya diri untuk interview, diskusi teknis, dan ngobrol sehari-hari di lingkungan industri.</p></div>
+   <button class="big" data-start="interview" style="--tint:var(--blue-soft);--c:var(--blue)"><span class="ic">${I.brief}</span><span><b>Simulasi Interview</b><span>Pertanyaan HRD dan user untuk posisi magang elektro</span></span><span class="go">${I.arrow}</span></button>
+   <button class="big" data-start="${["firstday","smalltalk","meeting"][dayNo()%3]}" style="--tint:var(--teal-soft);--c:var(--teal)"><span class="ic">${I.people}</span><span><b>Ngobrol dengan Rekan Kerja</b><span>Situasi pabrik, proyek, dan lapangan</span></span><span class="go">${I.arrow}</span></button>`;
+}
+function vStage(){
+  const sc=S.chat?S.chat.sc:(S.scen||todayScen());
+  return `<div class="stage ${S.talking?"talking live":""}" id="stage">
+   <div class="scene">${SCENE}<span class="scen-chip">${I.chat.replace("<svg",'<svg width="14" height="14"')}${esc(sc.t)}</span>
+    <div class="tutor">${tutorSVG()}</div>
+    <div class="say" id="sayBubble">${S.chat?`<b>${esc(sc.who)}</b>${S.busy?"Hmm, sebentar…":"Giliranmu bicara!"}`:`<b>Hi! I'm Manda</b>Partner latihan English-mu untuk interview dan magang.`}</div>
+    <div class="micdock"><div class="microw"><span class="wave">${"<i></i>".repeat(9)}</span><button class="bigmic" id="bigMic" aria-label="Bicara">${I.mic}</button><span class="wave">${"<i></i>".repeat(9)}</span></div>
+     <div class="miclabel" id="micLabel">${S.chat?"Klik untuk bicara<span>atau pakai mic keyboard</span>":"Klik untuk mulai<span>latihan hari ini</span>"}</div></div>
+   </div>
+   <div class="chat" id="chat">${vChat()}</div>
+  </div>`;
+}
+function vChat(){
+  const c=S.chat;
+  const sc=c?c.sc:(S.scen||todayScen());
+  const head=`<div class="chat-h">${I.brief}<b>${esc(sc.t)}</b><button class="linkbtn" id="changeBtn">Ganti ▾</button></div>`;
+  if(!c){
+    return head+`<div class="thread"><div class="m"><span class="ava">${MINI_FACE}</span><div class="col"><div class="who">Manda<span>${hhmm()}</span></div><div class="bb">Hi Nilam! Hari ini kita latihan <b>${esc(sc.t)}</b>. Aku akan berperan sebagai <b>${esc(sc.who)}</b>. Jawab dengan suara atau ketik, nanti tiap kalimatmu aku koreksi.</div></div></div>
+    <div class="startbox"><div class="seg" role="group" aria-label="Tingkat">${LEVELS.map(l=>`<button data-level="${l[0]}" aria-pressed="${S.prog.level===l[0]}">${l[1]}</button>`).join("")}</div><button class="btn primary" data-start="${sc.id}">${I.mic}Mulai percakapan</button></div></div>`;
+  }
+  const thread=c.ui.map((m,i)=>{
+    if(m.who==="ai")return `<div class="m"><span class="ava">${MINI_FACE}</span><div class="col"><div class="who">${esc(c.sc.who)}<span>${m.time}</span></div><div class="bb">${esc(m.text)}${m.tr?`<div class="tr">${esc(m.tr)}</div>`:""}</div><div class="tools"><button data-say="${esc(m.text)}">${I.speak}Putar</button>${m.trFull?`<button data-tr="${i}">${I.lang}Arti</button>`:""}</div></div></div>`;
+    let fx="";
+    if(m.fix)fx=m.fix.ok?`<div class="fix ok"><b>Sudah tepat!</b>${m.fix.why?`<span>${esc(m.fix.why)}</span>`:""}</div>`
+      :`<div class="fix"><b>Lebih natural:</b><span class="better">${esc(m.fix.better)}</span>${m.fix.why?`<span>${esc(m.fix.why)}</span>`:""}<span class="acts"><button class="iconbtn" data-say="${esc(m.fix.better)}" aria-label="Dengarkan" style="padding:3px">${I.speak}</button><button class="iconbtn" data-save-en="${esc(m.fix.better)}" data-save-id="" aria-label="Simpan" style="padding:3px">${I.plus}</button></span></div>`;
+    return `<div class="m me"><span class="ava">${NILAM_FACE}</span><div class="col"><div class="who">Nilam<span>${m.time}</span></div><div class="bb">${esc(m.text)}</div>${fx}</div></div>`;
+  }).join("");
+  const typing=S.busy&&!c.fbLoading?`<div class="m"><span class="ava">${MINI_FACE}</span><div class="bb"><span class="typing"><i></i><i></i><i></i></span></div></div>`:"";
+  const n=c.ui.filter(m=>m.who==="me").length;
+  let bottom;
+  if(c.feedback)bottom=`<div style="padding:0 12px 12px">${vFeedback(c.feedback)}</div>`;
+  else if(c.fbLoading)bottom=`<div class="composer"><p class="hint">Manda sedang menilai percakapanmu… (10–40 detik)</p></div>`;
+  else bottom=`<div class="composer">
+    <div class="inrow"><textarea id="msg" rows="1" maxlength="600" placeholder="Bicara atau ketik dalam bahasa Inggris…" aria-label="Jawabanmu"></textarea><button class="send" id="sendBtn" aria-label="Kirim" ${S.busy?"disabled":""}>${I.send}</button></div>
+    <p class="hint" id="micTip" hidden>Mikrofon langsung tidak tersedia di sini. Ketuk kolom ketik, lalu tekan ikon mikrofon di keyboard HP (Gboard / iPhone) dan bicara dalam English.</p>
+    <div class="err" id="chatErr" hidden></div>
+    <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap"><label class="hint" style="display:flex;gap:5px;align-items:center"><input type="checkbox" id="autoSpk" ${S.autoSpeak?"checked":""}>Suara Manda</label>
+    ${n>=3?`<button class="btn" id="finishBtn">${I.flag}Selesai &amp; nilai</button>`:`<span class="hint">Balas ${3-n}× lagi untuk dinilai</span>`}</div></div>`;
+  return head+`<div class="thread" id="thread">${thread}${typing}</div>`+bottom;
+}
+function vFeedback(f){
+  const s=f.scores||{};
+  return `<div class="fb"><h3>Hasil latihan</h3><p style="font-size:13.5px;font-weight:600">${esc(f.summary||"")}</p>
+   <div class="sc3"><div style="background:var(--blue-soft)"><b>${s.fluency||"-"}/5</b><span>Fluency</span></div><div style="background:var(--teal-soft)"><b>${s.grammar||"-"}/5</b><span>Grammar</span></div><div style="background:var(--violet-soft)"><b>${s.vocabulary||"-"}/5</b><span>Vocab</span></div></div>
+   ${f.strengths&&f.strengths.length?`<div><b style="font-size:13px">Sudah bagus</b><ul>${f.strengths.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+   ${f.fixes&&f.fixes.length?`<div style="display:flex;flex-direction:column;gap:6px"><b style="font-size:13px">Perbaiki ini</b>${f.fixes.map(x=>`<div class="fx"><span class="you">${esc(x.you)}</span><span class="better">${esc(x.better)}</span><span class="why">${esc(x.why)}</span></div>`).join("")}</div>`:""}
+   ${f.phrases&&f.phrases.length?`<div style="display:flex;flex-direction:column;gap:6px"><b style="font-size:13px">Frasa baru</b>${f.phrases.map(p=>`<div class="fx" style="flex-direction:row;align-items:center;gap:6px"><button class="iconbtn" data-say="${esc(p.en)}" style="padding:3px">${I.speak}</button><span style="flex:1"><span class="better" style="display:block">${esc(p.en)}</span><span class="why">${esc(p.id)}</span></span><button class="iconbtn" data-save-en="${esc(p.en)}" data-save-id="${esc(p.id)}" style="padding:3px" aria-label="Simpan">${I.plus}</button></div>`).join("")}</div>`:""}
+   ${f.next?`<p style="font-size:13px;font-weight:700;background:var(--amber-soft);border-radius:10px;padding:8px 10px">Besok: ${esc(f.next)}</p>`:""}
+   <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary" data-start="${S.chat.sc.id}">${I.mic}Ulangi</button><button class="btn" id="changeBtn2">Situasi lain</button></div></div>`;
+}
+function vSide(){
+  const dn=doneTasks(),n=TASKS.filter(t=>dn.includes(t[0])).length,pct=n/5,C=2*Math.PI*40;
+  const d=new Date(),ph=todayPhrase(),st=streak();
+  const msg=n===5?"Semua tugas hari ini beres!":n>=3?"Progres bagus!":n>0?"Lanjutkan, sedikit lagi!":"Ayo mulai dari kalimat hari ini.";
+  return `<div class="card todo"><div class="todo-h"><h2>${I.cal}Latihan hari ini</h2><span>${HARI[d.getDay()]}, ${d.getDate()} ${BULAN[d.getMonth()]}</span></div>
+   <div class="ring"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--soft)" stroke-width="10"/><circle cx="50" cy="50" r="40" fill="none" stroke="var(--teal)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C*pct} ${C}" transform="rotate(-90 50 50)"/><text x="50" y="52" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-size="22" font-weight="800" fill="var(--ink)">${n}/5</text><text x="50" y="68" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" font-weight="700" fill="var(--muted)">tugas</text></svg>
+   <div><b>${msg}</b><p>${st?`${st} hari beruntun. Jangan putus ya!`:"Selesaikan 1 tugas untuk memulai streak."}</p></div></div>
+   <div class="tasks">${TASKS.map(t=>`<button class="task ${dn.includes(t[0])?"done":""}" data-task="${t[0]}"><span class="ck">${dn.includes(t[0])?I.check:""}</span><span>${t[1]}</span>${I.chev}</button>`).join("")}</div></div>
+   <div class="card phrase" id="phraseCard"><span class="hint" style="color:var(--violet)">KALIMAT HARI INI · dengar lalu ucapkan 3×</span><div class="en">${esc(ph[0])}</div><div class="id">${esc(ph[1])}</div>
+   <div class="row"><button class="btn" data-say="${esc(ph[0])}">${I.speak}Dengar</button><button class="btn" data-say-slow="${esc(ph[0])}">Pelan</button><button class="btn primary" id="phraseDone">${I.check}Sudah kuucapkan</button></div></div>
+   <div class="card cheer">${I.trophy}<div><b>${st>=3?"Kamu konsisten!":"Kamu pasti bisa!"}</b><span>Latihan rutin 10 menit sehari bikin lebih siap untuk interview dan magang.</span></div></div>`;
+}
+function vSkills(){
+  const s=skillStats();
+  const row=(ic,t,v,max,note,c,tint)=>`<div class="sk" style="--c:${c};--tint:${tint}"><span class="ic">${ic}</span><div><div class="t"><b>${t}</b><span>${v}/${max}</span></div><div class="bar"><i style="width:${Math.min(100,v/max*100)}%"></i></div><p>${note}</p></div></div>`;
+  const has=S.prog.sessions.length>0;
+  return row(I.wave,"Fluency",s.f,100,has?"Rata-rata 5 sesi terakhir.":"Muncul setelah sesi pertama dinilai.","var(--coral)","var(--coral-soft)")
+   +row(I.chart,"Grammar",s.g,100,has?"Ketepatan tata bahasa saat bicara.":"Selesaikan satu percakapan dulu.","var(--teal)","var(--teal-soft)")
+   +row(I.doc,"Kosakata",s.learned,Math.max(20,S.prog.phrases.length),`${s.learned} dari ${S.prog.phrases.length} frasa sudah kamu hafal.`,"var(--violet)","var(--violet-soft)")
+   +row(I.brief,"Sesi Interview",Math.min(s.iv,20),20,`Target 20 simulasi interview sebelum magang.`,"var(--blue)","var(--blue-soft)");
+}
+function modTiles(){const cur=(S.chat?S.chat.sc:(S.scen||todayScen())).id;
+  return SCEN.map(s=>`<button class="mod ${s.id===cur?"active":""}" data-pick="${s.id}"><span class="th">${TH[s.id]}</span><span><b>${esc(s.t)}</b><span>${esc(s.d)}</span></span></button>`).join("")}
+
+function vPractice(){
+  return `<div class="page"><h1>Pilih situasi latihan</h1><p class="muted" style="font-weight:600">Manda memerankan orang di tempat magang. Pilih tingkat bahasamu dulu.</p>
+  <div class="seg" role="group" aria-label="Tingkat" style="align-self:flex-start">${LEVELS.map(l=>`<button data-level="${l[0]}" aria-pressed="${S.prog.level===l[0]}">${l[1]}</button>`).join("")}</div>
+  <div class="mods" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))">${SCEN.map(s=>`<button class="mod" data-start="${s.id}"><span class="th">${TH[s.id]}</span><span><b>${esc(s.t)}</b><span>${esc(s.d)} · Manda sebagai ${esc(s.who)}</span></span></button>`).join("")}</div></div>`;
+}
+function vVocab(){
+  const ps=S.prog.phrases;
+  return `<div class="page"><h1>Kosakata &amp; frasa</h1><p class="muted" style="font-weight:600">Putar suaranya, tirukan keras-keras 3 kali, lalu centang kalau sudah hafal. Hafal 3 frasa sehari menyelesaikan tugas "Hafalkan 3 frasa".</p>
+  ${ps.length?`<div class="plist">${ps.map((p,i)=>`<div class="card pi ${p.learned?"learned":""}"><button class="iconbtn" data-say="${esc(p.en)}" aria-label="Dengarkan">${I.speak}</button><div><div class="en">${esc(p.en)}</div>${p.id?`<div class="id">${esc(p.id)}</div>`:""}</div><div class="acts"><button class="iconbtn" data-learn="${i}" aria-label="Tandai hafal" style="${p.learned?"color:var(--teal)":""}">${I.check}</button><button class="iconbtn" data-del="${i}" aria-label="Hapus">${I.trash}</button></div></div>`).join("")}</div>`
+  :`<div class="empty">Belum ada frasa. Simpan dari kalimat hari ini, koreksi Manda (tombol +), atau frasa baru setelah latihan.</div>`}
+  <div style="display:flex;flex-direction:column;gap:8px"><h2 style="font-size:18px">Frasa penting untuk magang</h2>${PHRASES.map(p=>`<div class="card pi"><button class="iconbtn" data-say="${esc(p[0])}">${I.speak}</button><div><div class="en">${esc(p[0])}</div><div class="id">${esc(p[1])}</div></div><button class="iconbtn" data-save-en="${esc(p[0])}" data-save-id="${esc(p[1])}" aria-label="Simpan">${I.plus}</button></div>`).join("")}</div></div>`;
+}
+function vProgress(){
+  const s=skillStats(),st=streak(),tot=S.prog.sessions.length;
+  const wk=[...Array(7)].map((_,i)=>{const d=addDays(new Date(),i-6),k=ymd(d),on=((S.prog.days[k]||{}).tasks||[]).length>0;return `<div class="wd ${on?"on":""}"><i>${on?I.check:""}</i>${HARI[d.getDay()]}</div>`}).join("");
+  return `<div class="page"><h1>Progres kamu</h1>
+  <div class="statrow"><div class="card st"><b>${st}</b><span>hari beruntun</span></div><div class="card st"><b>${tot}</b><span>sesi dinilai</span></div><div class="card st"><b>${s.iv}</b><span>simulasi interview</span></div><div class="card st"><b>${s.learned}</b><span>frasa dihafal</span></div></div>
+  <div class="card week">${wk}</div>
+  <section class="card skills">${vSkills()}</section>
+  <h2 style="font-size:18px">Riwayat sesi</h2>
+  ${tot?`<div class="plist">${S.prog.sessions.slice(0,20).map(x=>{const sc=SCEN.find(y=>y.id===x.scen)||SCEN[9];return `<div class="card pi"><span class="th" style="width:44px;height:44px;border-radius:10px;overflow:hidden;display:block">${TH[sc.id]}</span><div><div class="en">${esc(sc.t)}</div><div class="id">${esc(x.date)} · Fluency ${x.f}/5 · Grammar ${x.g}/5 · Vocab ${x.v}/5</div></div><span></span></div>`}).join("")}</div>`:`<div class="empty">Belum ada sesi yang dinilai.</div>`}</div>`;
+}
+function render(){
+  renderNav();
+  const v=document.getElementById("view");
+  document.getElementById("logoutBtn").hidden=S.mode!=="cloud";
+  document.getElementById("bnav").hidden=S.mode==="auth";document.getElementById("tabs").hidden=S.mode==="auth";
+  if(S.mode==="loading"){v.innerHTML=`<div class="empty">Menyiapkan kelas…</div>`;return}
+  if(S.mode==="auth"){v.innerHTML=vAuth();document.getElementById("meAv").innerHTML=NILAM_FACE;return}
+  const draft=document.getElementById("msg"),keep=draft?draft.value:"";
+  v.innerHTML=S.view==="practice"?vPractice():S.view==="vocab"?vVocab():S.view==="progress"?vProgress():vHome();
+  document.getElementById("meAv").innerHTML=NILAM_FACE;
+  wireComposer(keep);
+}
+function renderChat(){const c=document.getElementById("chat");if(!c){render();return}const d=document.getElementById("msg"),keep=d?d.value:"";c.innerHTML=vChat();wireComposer(keep);
+  const say=document.getElementById("sayBubble");if(say&&S.chat)say.innerHTML=`<b>${esc(S.chat.sc.who)}</b>${S.busy?"Hmm, sebentar…":S.chat.feedback?"Kerja bagus hari ini!":"Giliranmu bicara!"}`;
+  const t=document.getElementById("thread");if(t)t.scrollTop=t.scrollHeight}
+function renderSide(){const s=document.getElementById("side");if(s)s.innerHTML=vSide();const k=document.getElementById("skills");if(k)k.innerHTML=vSkills()}
+function wireComposer(keep){const m=document.getElementById("msg");if(!m)return;m.value=keep||"";autosize(m);
+  m.addEventListener("input",()=>autosize(m));
+  m.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&matchMedia("(min-width:760px)").matches){e.preventDefault();send()}});
+  const t=document.getElementById("thread");if(t)t.scrollTop=t.scrollHeight}
+function autosize(t){t.style.height="auto";t.style.height=Math.min(t.scrollHeight,120)+"px"}
+
+/* ================= CONVERSATION ================= */
+function rules(sc){return `You are Manda, an English speaking coach for Nilam, an Indonesian D4 Electrical Engineering (power systems) student preparing for an engineering internship at an industrial company in Batam, Indonesia.
+Role-play: you are ${sc.role}. Stay in character and keep it realistic for an Indonesian industrial workplace.
+${LEVEL_TXT[S.prog.level]||LEVEL_TXT.mid}
+Nilam's messages come from speech-to-text, so ignore missing punctuation and capitalization; judge grammar, word choice and naturalness.
+After each message from Nilam, reply with ONLY a JSON object:
+{"reply":"your in-character reply in English, 1-3 short sentences, ending with one question that keeps her talking","fix":{"ok":true or false,"better":"a corrected, natural version of Nilam's last message (empty if ok)","why":"one short explanation in Bahasa Indonesia of the main mistake, or a short compliment in Bahasa Indonesia if ok"},"tr":"Indonesian translation of your reply"}
+If Nilam writes in Indonesian, gently ask her in English to try again in English and put the English version in "better".`}
+function startChat(id){
+  const sc=SCEN.find(s=>s.id===id)||SCEN[0];S.scen=sc;
+  S.chat={sc,turns:[{role:"user",content:rules(sc)+"\n\nStart the role-play now."},{role:"assistant",content:sc.open}],ui:[{who:"ai",text:sc.open,time:hhmm()}],feedback:null,fbLoading:false};
+  if(S.view!=="home"){S.view="home";render();window.scrollTo(0,0)}else render();
+  const st=document.getElementById("stage");if(st&&matchMedia("(max-width:980px)").matches)st.scrollIntoView({behavior:"smooth",block:"start"});
+  if(S.autoSpeak)speak(sc.open);
+}
+async function send(){
+  const box=document.getElementById("msg");if(!box||S.busy)return;
+  const text=box.value.trim(),err=document.getElementById("chatErr");
+  if(!text){err.textContent="Ucapkan atau ketik jawabanmu dulu.";err.hidden=false;return}
+  if(rec){try{rec.stop()}catch(e){}}
+  const sample=await getSample();
+  if(!sample){err.textContent=S.mode==="local"?"Manda belum tersambung. Isi konfigurasi Firebase dulu (lihat PANDUAN).":"Manda belum siap. Muat ulang halaman.";err.hidden=false;return}
+  const c=S.chat;c.ui.push({who:"me",text,time:hhmm()});c.turns.push({role:"user",content:text});
+  box.value="";S.busy=true;renderChat();
+  const input=[{role:"user",content:c.turns[0].content},...c.turns.slice(1).slice(-16)];
+  try{
+    const r=await sample.json(input,{modelTier:"quick",cache:false});
+    const reply=String(r&&r.reply||"").trim()||"Sorry, could you say that again?";
+    const me=c.ui[c.ui.length-1];
+    if(r&&r.fix){me.fix={ok:!!r.fix.ok,better:String(r.fix.better||""),why:String(r.fix.why||"")};if(!me.fix.ok&&!me.fix.better)me.fix.ok=true}
+    c.turns.push({role:"assistant",content:reply});c.ui.push({who:"ai",text:reply,time:hhmm(),trFull:String(r&&r.tr||"")});
+    S.busy=false;renderChat();if(S.autoSpeak)speak(reply);
+  }catch(e){
+    S.busy=false;c.turns.pop();c.ui.pop();renderChat();
+    const b=document.getElementById("msg");if(b)b.value=text;
+    const er=document.getElementById("chatErr");if(er){er.textContent=errText(e&&e.code);er.hidden=false}
+    if(e&&["not_granted","sampling_disabled"].includes(e.code))S.sampleDead=true;
+  }
+}
+async function finish(){
+  const c=S.chat,sample=await getSample();if(!sample)return;
+  c.fbLoading=true;S.busy=true;renderChat();
+  const tr=c.ui.map(m=>(m.who==="ai"?"Partner: ":"Nilam: ")+m.text).join("\n");
+  const prompt=`You are an English speaking coach. Below is a role-play transcript ("${c.sc.t}") between Nilam, an Indonesian electrical engineering student preparing for an internship, and her partner. ${LEVEL_TXT[S.prog.level]||""}
+Evaluate ONLY Nilam's lines (speech-to-text: ignore punctuation and capitalization).
+Reply with ONLY this JSON:
+{"scores":{"fluency":1-5,"grammar":1-5,"vocabulary":1-5},"summary":"2 short encouraging sentences in Bahasa Indonesia","strengths":["1-3 short points in Bahasa Indonesia"],"fixes":[{"you":"her original phrase","better":"natural English version","why":"short explanation in Bahasa Indonesia"}],"phrases":[{"en":"useful workplace phrase for this situation","id":"Indonesian meaning"}],"next":"one concrete practice tip for tomorrow in Bahasa Indonesia"}
+At most 4 fixes (most important first) and 3-5 phrases.
+
+Transcript:
+${tr.slice(-12000)}`;
+  try{
+    const f=await sample.json(prompt,{cache:false});
+    c.feedback=f;c.fbLoading=false;S.busy=false;
+    const d=dayRec(today());d.sessions=(d.sessions||0)+1;d.turns=(d.turns||0)+c.ui.filter(m=>m.who==="me").length;d.tasks=d.tasks||[];
+    const cat=c.sc.cat;if(!d.tasks.includes(cat))d.tasks.push(cat);
+    const sc=f&&f.scores||{};S.prog.sessions.unshift({date:today(),scen:c.sc.id,f:sc.fluency||0,g:sc.grammar||0,v:sc.vocabulary||0});
+    if(S.prog.sessions.length>60)S.prog.sessions.length=60;
+    save();renderChat();renderSide();toast("Sesi tercatat!");speak(c.sc.cat==="interview"?"Great job today, Nilam!":"Nice work, Nilam! See you tomorrow.");
+  }catch(e){c.fbLoading=false;S.busy=false;renderChat();const er=document.getElementById("chatErr");if(er){er.textContent=errText(e&&e.code);er.hidden=false}}
+}
+function openPicker(){
+  const root=document.getElementById("modalRoot");
+  root.innerHTML=`<div class="backdrop" id="bd"><div class="sheet" role="dialog" aria-modal="true" aria-label="Pilih situasi"><div style="display:flex;justify-content:space-between;align-items:center"><h2>Pilih situasi</h2><button class="iconbtn" data-close aria-label="Tutup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="mods">${SCEN.map(s=>`<button class="mod" data-start="${s.id}"><span class="th">${TH[s.id]}</span><span><b>${esc(s.t)}</b><span>${esc(s.d)}</span></span></button>`).join("")}</div></div></div>`;
+  document.getElementById("bd").addEventListener("mousedown",e=>{if(e.target.id==="bd")root.innerHTML=""});
+}
+
+/* ================= AUTH ================= */
+const AUTH_ERR={"auth/invalid-credential":"Email atau kata sandi salah.","auth/wrong-password":"Email atau kata sandi salah.","auth/user-not-found":"Akun belum ada. Pilih Daftar dulu.","auth/email-already-in-use":"Email ini sudah terdaftar. Pilih Masuk.","auth/weak-password":"Kata sandi minimal 6 karakter.","auth/invalid-email":"Format email belum benar.","auth/missing-password":"Isi kata sandinya dulu.","auth/too-many-requests":"Terlalu banyak percobaan. Tunggu sebentar.","auth/network-request-failed":"Tidak ada koneksi internet.","auth/operation-not-allowed":"Login email belum diaktifkan di Firebase.","auth/unauthorized-domain":"Alamat website belum didaftarkan di Firebase (Authorized domains)."};
+function vAuth(){return `<form class="authbox" id="authForm" novalidate><span class="face">${MINI_FACE}</span><h1>Hi Nilam, I'm Manda!</h1>
+  <p>Masuk dengan akun yang sama seperti aplikasi Jadwal supaya progres latihanmu tersimpan di HP dan laptop.</p>
+  <div class="field"><label for="a-email">Email</label><input id="a-email" type="email" autocomplete="email" required></div>
+  <div class="field"><label for="a-pass">Kata sandi</label><input id="a-pass" type="password" autocomplete="current-password" minlength="6" required></div>
+  <div class="err" id="a-err" hidden></div><div class="okmsg" id="a-ok" hidden></div>
+  <button class="btn primary" type="submit" data-mode="login">Masuk</button>
+  <div class="alt"><button class="linkbtn" type="submit" data-mode="signup">Belum punya akun? Daftar</button><button class="linkbtn" type="submit" data-mode="reset">Lupa kata sandi</button></div></form>`}
+document.addEventListener("submit",async e=>{
+  if(e.target.id!=="authForm")return;e.preventDefault();
+  const mode=(e.submitter&&e.submitter.dataset.mode)||"login";
+  const email=document.getElementById("a-email").value.trim(),pass=document.getElementById("a-pass").value;
+  const er=document.getElementById("a-err"),ok=document.getElementById("a-ok");er.hidden=true;ok.hidden=true;
+  try{if(mode==="signup")await fb.A.createUserWithEmailAndPassword(fb.auth,email,pass);
+    else if(mode==="reset"){await fb.A.sendPasswordResetEmail(fb.auth,email);ok.textContent="Link ganti kata sandi sudah dikirim ke email kamu.";ok.hidden=false}
+    else await fb.A.signInWithEmailAndPassword(fb.auth,email,pass)}
+  catch(x){er.textContent=AUTH_ERR[x.code]||("Gagal: "+(x.code||x.message));er.hidden=false}
+});
+
+/* ================= EVENTS ================= */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b||b.closest("#authForm"))return;
+  const root=document.getElementById("modalRoot");
+  if(b.id==="logoutBtn"){if(b.dataset.armed){S.chat=null;fb&&fb.A.signOut(fb.auth)}else{b.dataset.armed="1";b.style.color="var(--coral)";b.title="Ketuk lagi untuk keluar";toast("Ketuk sekali lagi untuk keluar");setTimeout(()=>{delete b.dataset.armed;b.style.color=""},3000)}return}
+  if(b.hasAttribute("data-close")){root.innerHTML="";return}
+  if(b.dataset.view){S.view=b.dataset.view;render();window.scrollTo(0,0);return}
+  if(b.id==="themeBtn"){const cur=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("su-theme",n)}catch(_){}return}
+  if(b.dataset.start){root.innerHTML="";if(S.busy)return;startChat(b.dataset.start);return}
+  if(b.dataset.pick){if(S.busy)return;const sc=SCEN.find(s=>s.id===b.dataset.pick);if(S.chat&&!S.chat.feedback&&S.chat.ui.length>1){startChat(sc.id)}else{S.chat=null;S.scen=sc;render();const st=document.getElementById("stage");st&&st.scrollIntoView({behavior:"smooth",block:"start"})}return}
+  if(b.id==="changeBtn"||b.id==="changeBtn2"){if(S.busy)return;openPicker();return}
+  if(b.dataset.say!==undefined){speak(b.dataset.say);return}
+  if(b.dataset.saySlow!==undefined){speak(b.dataset.saySlow,.7);return}
+  if(b.dataset.saveEn!==undefined){addPhrase(b.dataset.saveEn,b.dataset.saveId);if(S.view==="vocab")render();return}
+  if(b.dataset.level){S.prog.level=b.dataset.level;save();if(S.view==="home")renderChat();else render();return}
+  if(b.dataset.tr!==undefined){const m=S.chat&&S.chat.ui[+b.dataset.tr];if(m){m.tr=m.tr?"":m.trFull;renderChat()}return}
+  if(b.dataset.learn!==undefined){const p=S.prog.phrases[+b.dataset.learn];if(p){p.learned=!p.learned;if(p.learned)p.learnedOn=today();save();render();
+      if(S.prog.phrases.filter(x=>x.learned&&x.learnedOn===today()).length>=3)markTask("vocab")}return}
+  if(b.dataset.del!==undefined){if(b.dataset.armed){S.prog.phrases.splice(+b.dataset.del,1);save();render()}else{b.dataset.armed="1";b.style.color="var(--coral)";b.title="Ketuk lagi untuk hapus";setTimeout(()=>{delete b.dataset.armed;b.style.color=""},2500)}return}
+  if(b.dataset.task){const t=b.dataset.task;
+    if(t==="phrase"){const pc=document.getElementById("phraseCard");pc&&pc.scrollIntoView({behavior:"smooth",block:"center"});speak(todayPhrase()[0]);return}
+    if(t==="vocab"){S.view="vocab";render();window.scrollTo(0,0);return}
+    const pool=SCEN.filter(s=>s.cat===t);startChat(pool[dayNo()%pool.length].id);return}
+  if(b.id==="phraseDone"){markTask("phrase");return}
+  if(b.id==="bigMic"){toggleMic();return}
+  if(b.id==="sendBtn"){send();return}
+  if(b.id==="finishBtn"){finish();return}
+});
+document.addEventListener("change",e=>{if(e.target.id==="autoSpk"){S.autoSpeak=e.target.checked;try{localStorage.setItem("su-auto",S.autoSpeak?"1":"0")}catch(_){}}});
+
+render();
+initStore();
+})();
+</script>
+</body>
+</html>
